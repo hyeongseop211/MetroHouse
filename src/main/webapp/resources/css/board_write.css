@@ -1,0 +1,230 @@
+:root { 
+    /* 새로운 색상 팔레트 - 지하철 테마 */
+    --primary: #3b82f6;         /* 파란색 (지하철 1호선 색상에서 영감) */
+    --primary-dark: #1d4ed8;    /* 진한 파란색 */
+    --primary-light: #dbeafe;   /* 연한 파란색 */
+    --secondary: #4b5563;       /* 어두운 회색 */
+    --accent: #10b981;          /* 녹색 (지하철 2호선 색상에서 영감) */
+    --accent2: #f97316;         /* 주황색 (지하철 3호선 색상에서 영감) */
+    --accent3: #06b6d4;         /* 청록색 (지하철 4호선 색상에서 영감) */
+    --accent4: #8b5cf6;         /* 보라색 (지하철 5호선 색상에서 영감) */
+    --success: #22c55e;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+    --info: #0ea5e9;
+    --light: #f8fafc;
+    --dark: #1e293b;
+    --gray-100: #f1f5f9;
+    --gray-200: #e2e8f0;
+    --gray-300: #cbd5e1;
+    --gray-400: #94a3b8;
+    --gray-500: #64748b;
+    --border-radius: 12px;      /* 더 둥근 모서리 */
+    --box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --transition: all 0.3s ease;
+    --card-gradient: linear-gradient(135deg, var(--primary-light) 0%, #ffffff 100%);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: var(--gray-100);
+    color: var(--dark);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px 20px;
+}
+
+.board-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.board-form {
+    background-color: white;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--box-shadow);
+    padding: 35px;
+}
+
+.form-header {
+    margin-bottom: 30px;
+    border-bottom: 1px solid var(--gray-200);
+    padding-bottom: 20px;
+}
+
+.form-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.form-title i {
+    color: var(--primary);
+}
+
+.form-description {
+    color: var(--gray-500);
+    font-size: 15px;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 500;
+    color: var(--dark);
+    font-size: 15px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid var(--gray-200);
+    border-radius: var(--border-radius);
+    font-size: 15px;
+    transition: var(--transition);
+}
+
+.form-control:focus {
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+.editor-container {
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+/* Quill 에디터 스타일 커스터마이징 */
+.ql-toolbar.ql-snow {
+    border: 2px solid var(--gray-200) !important;
+    border-top-left-radius: var(--border-radius);
+    border-top-right-radius: var(--border-radius);
+    background-color: var(--gray-100);
+    padding: 10px !important;
+}
+
+.ql-container.ql-snow {
+    border: 2px solid var(--gray-200) !important;
+    border-top: none !important;
+    border-bottom-left-radius: var(--border-radius);
+    border-bottom-right-radius: var(--border-radius);
+    min-height: 300px;
+}
+
+.ql-editor {
+    min-height: 300px;
+    font-size: 15px;
+    padding: 16px !important;
+}
+
+.ql-editor:focus {
+    border-color: var(--primary);
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.btn {
+    padding: 12px 24px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 500;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.3);
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px -2px rgba(59, 130, 246, 0.4);
+}
+
+.btn-secondary {
+    background-color: white;
+    color: var(--gray-500);
+    border: 2px solid var(--gray-200);
+}
+
+.btn-secondary:hover {
+    background-color: var(--gray-100);
+    color: var(--dark);
+}
+
+.error-message {
+    color: var(--danger);
+    font-size: 14px;
+    margin-top: 8px;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+    .board-form {
+        padding: 25px;
+    }
+    
+    .form-actions {
+        flex-direction: column-reverse;
+    }
+    
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .ql-editor {
+        min-height: 250px;
+    }
+}
+
+@media (max-width: 576px) {
+    .board-form {
+        padding: 20px;
+    }
+    
+    .form-title {
+        font-size: 20px;
+    }
+    
+    .form-description {
+        font-size: 14px;
+    }
+    
+    .form-control, .ql-editor {
+        font-size: 14px;
+    }
+}

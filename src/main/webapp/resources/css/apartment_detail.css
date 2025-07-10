@@ -1,0 +1,936 @@
+:root {
+
+    --radius: 0.5rem;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Noto Sans KR", sans-serif;
+}
+
+body {
+  background-color: var(--gray-50);
+  color: var(--gray-800);
+  line-height: 1.5;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/* 헤더 */
+.page-header {
+  position: sticky;
+  top: 80px;
+  height: 85px;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  padding: 1rem 1.5rem;
+  border-radius: var(--radius);
+  background: white;
+  box-shadow: var(--shadow-md);
+  transition: all 0.3s ease;
+}
+
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.page-title i {
+  background-color: var(--primary);
+  color: white;
+  padding: 0.5rem;
+  border-radius: 50%;
+  font-size: 1rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.back-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--gray-600);
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s;
+  background-color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid #eee;
+}
+
+.back-link:hover {
+  color: white;
+  background-color: var(--primary-light);
+}
+
+.back-link i {
+  transition: transform 0.2s;
+}
+
+/* 메인 콘텐츠 */
+.apartment-detail {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .apartment-detail {
+    grid-template-columns: 380px 1fr;
+  }
+}
+
+/* 아파트 이미지 및 액션 섹션 */
+.apartment-sidebar {
+  position: sticky;
+  top: 90px; /* 헤더 높이를 고려하여 상단 여백 증가 */
+  height: fit-content;
+  border: 1px solid var(--gray-200);
+  border-radius: 10px;
+  padding: 1.25rem;
+  background-color: white;
+  box-shadow: var(--shadow);
+  z-index: 5; /* 다른 요소보다 위에 표시되도록 z-index 추가 */
+}
+
+/* 아파트 제목 컨테이너 - 햄버거 메뉴 추가 */
+.apartment-title-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.25rem;
+}
+
+.apartment-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--gray-900);
+  line-height: 1.3;
+  flex: 1;
+}
+
+/* 관리자 햄버거 메뉴 스타일 */
+.admin-menu-container {
+  position: relative;
+  margin-left: 0.5rem;
+  background-color: lightgrey;
+  border-radius: 8px;
+  transition: color 0.2s;
+}
+.admin-menu-container:hover {
+  background-color: var(--primary-light);
+}
+
+.admin-menu-button {
+  background: none;
+  border: none;
+  color: var(--gray-600);
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+}
+
+.admin-menu-button:hover {
+  color: var(--primary);
+}
+
+.admin-menu-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: white;
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  z-index: 100;
+  min-width: 180px;
+  margin-top: 0.25rem;
+  display: none;
+}
+
+.admin-menu-dropdown.show {
+  display: block;
+}
+
+.admin-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  color: var(--gray-700);
+  text-decoration: none;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+}
+
+.admin-menu-item:hover {
+  background-color: var(--gray-100);
+}
+
+.admin-menu-item.danger {
+  color: var(--danger);
+}
+
+.admin-menu-item.danger:hover {
+  background-color: rgba(239, 68, 68, 0.1);
+}
+
+.apartment-location {
+  font-size: 0.875rem;
+  color: var(--gray-700);
+  margin-bottom: 0.75rem;
+}
+
+.apartment-categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  margin-bottom: 0.75rem;
+}
+
+.apartment-category {
+  background-color: var(--primary);
+  color: #fff;
+  padding: 0.25rem 0.5rem;
+  border-radius: 2rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.apartment-price {
+  background-color: var(--secondary-light);
+  color: #fff;
+  padding: 0.25rem 0.5rem;
+  border-radius: 2rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+
+
+.apartment-image-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.apartment-cover {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  background-color: var(--gray-100);
+  border-radius: var(--radius);
+  overflow: hidden;
+  position: relative;
+}
+
+.apartment-cover-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  color: var(--gray-400);
+}
+
+.apartment-cover-placeholder i {
+  font-size: 3rem;
+}
+
+.apartment-info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.apartment-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.meta-label {
+  font-size: 0.75rem;
+  color: var(--gray-500);
+  font-weight: 500;
+}
+
+.meta-value {
+  font-size: 0.875rem;
+  color: var(--gray-800);
+  font-weight: 500;
+}
+
+.apartment-status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.status-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.625rem;
+  border-radius: var(--radius);
+  font-weight: 500;
+  font-size: 0.75rem;
+}
+
+.available {
+  background-color: rgba(16, 185, 129, 0.1);
+  color: var(--secondary);
+}
+
+.unavailable {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: var(--danger);
+}
+
+.count-badge {
+  background-color: var(--gray-100);
+  color: var(--gray-700);
+}
+
+.apartment-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.action-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1rem;
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  outline: none;
+  text-decoration: none;
+}
+
+.primary-button {
+  background-color: var(--primary);
+  color: white;
+}
+
+.primary-button:hover {
+  background-color: var(--primary-dark);
+}
+
+.primary-button:disabled {
+  background-color: var(--gray-400);
+  cursor: not-allowed;
+}
+
+.secondary-button {
+  background-color: white;
+  color: var(--primary);
+  border: 1px solid var(--primary);
+}
+
+.secondary-button:hover {
+  background-color: var(--primary);
+  color: #fff;
+}
+
+.danger-button {
+  background-color: var(--danger);
+  color: white;
+}
+
+.danger-button:hover {
+  background-color: #dc2626;
+}
+
+/* 아파트 정보 섹션 */
+.apartment-content {
+  border: 1px solid var(--gray-200);
+  border-radius: 10px;
+  background-color: white;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+/* 탭 섹션 */
+/*.tabs {*/
+/*  border-bottom: 1px solid var(--gray-200);*/
+/*}*/
+
+.tab-list {
+  display: flex;
+  list-style: none;
+  gap: 1rem;
+  padding: 0 1.5rem;
+}
+
+.tab-item {
+  padding: 1rem 0;
+  font-weight: 500;
+  color: var(--gray-500);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+}
+
+.tab-item.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+
+.tab-content {
+  padding: 1.5rem;
+}
+
+.tab-panel {
+  display: none;
+}
+
+.tab-panel.active {
+  display: block;
+}
+
+/* 아파트 설명 */
+.apartment-description {
+  color: var(--gray-700);
+  line-height: 1.7;
+  font-size: 1rem;
+}
+
+/* 정보 그리드 */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.75rem;
+  background-color: var(--gray-50);
+  border-radius: var(--radius);
+}
+
+.info-label {
+  font-size: 0.75rem;
+  color: var(--gray-500);
+  font-weight: 500;
+}
+
+.info-value {
+  font-size: 0.875rem;
+  color: var(--gray-800);
+  font-weight: 600;
+}
+
+/* 리뷰 섹션 */
+.reviews-section {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+/* 페이지네이션 - 간격 줄임 */
+.div_page {
+  margin: 0rem;
+}
+.review-stats {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 1.5rem;
+  background-color: var(--gray-100);
+  border-radius: var(--radius);
+  margin-bottom: 1.5rem;
+}
+
+.average-rating {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.rating-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--gray-900);
+}
+
+.rating-count {
+  font-size: 0.875rem;
+  color: var(--gray-500);
+}
+
+.rating-stars {
+  display: flex;
+  gap: 0.25rem;
+  color: #ffc107;
+  font-size: 1.25rem;
+}
+
+.rating-distribution {
+  flex: 1;
+}
+
+.rating-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.rating-label {
+  width: 1.5rem;
+  text-align: right;
+  font-size: 0.875rem;
+  color: var(--gray-600);
+}
+
+.rating-progress {
+  flex: 1;
+  height: 0.5rem;
+  background-color: var(--gray-200);
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.rating-progress-fill {
+  height: 100%;
+  background-color: #ffc107;
+}
+
+.rating-percent {
+  width: 2.5rem;
+  font-size: 0.875rem;
+  color: var(--gray-600);
+}
+
+.review-form {
+  padding: 1.25rem;
+  background-color: var(--gray-50);
+  border-radius: var(--radius);
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--gray-200);
+}
+
+.form-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--gray-900);
+  margin-bottom: 0.75rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--gray-700);
+}
+
+.rating-input {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.rating-input i {
+  font-size: 1.5rem;
+  color: #ffc107;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.rating-input i.active {
+  color: #ffc107;
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--gray-300);
+  border-radius: var(--radius);
+  font-size: 1rem;
+  color: var(--gray-800);
+  transition: border-color 0.2s;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+textarea.form-control {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* 리뷰 카드 스타일 수정 - 이미지와 같은 디자인 */
+.review-card {
+  padding: 1.1rem;
+  background-color: var(--gray-50);
+  border-radius: var(--radius);
+  border: 1px solid var(--gray-200);
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 0%;
+}
+
+.reviewer-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.reviewer-name-date {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.reviewer-name {
+  font-weight: 600;
+  color: var(--gray-900);
+  font-size: 1.3rem;
+}
+.review-date {
+  font-size: 0.875rem;
+  color: var(--gray-500);
+}
+
+.review-actions-top {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.review-action-icon {
+  color: var(--gray-400);
+  cursor: pointer;
+  transition: color 0.2s;
+  font-size: 1.125rem;
+}
+
+.review-action-icon:hover {
+  color: var(--primary);
+}
+
+.review-action-icon.like:hover,
+.review-action-icon.like.active {
+  color: var(--primary);
+}
+
+.review-action-icon.edit:hover {
+  color: var(--primary);
+}
+
+.review-action-icon.delete:hover {
+  color: var(--danger);
+}
+
+.review-title-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  margin-top: 0px;
+}
+
+.review-title {
+  font-weight: 600;
+  color: var(--gray-900);
+  margin-bottom: 0;
+  font-size: 1.125rem;
+  margin-right: 0;
+}
+
+.review-rating {
+  display: flex;
+  gap: 0.1rem;
+  color: #ffc107;
+  font-size: 1.125rem;
+  flex-shrink: 0;
+}
+
+.review-content {
+  color: var(--gray-700);
+  line-height: 1.6;
+}
+
+/* 모달 */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal.show {
+  display: flex;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.modal-content {
+  background-color: white;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  padding: 2rem;
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+}
+
+.modal-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.modal-icon.success {
+  color: var(--success);
+}
+
+.modal-icon.error {
+  color: var(--danger);
+}
+
+.modal-icon.info {
+  color: var(--info);
+}
+
+.modal-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--gray-900);
+}
+
+.modal-message {
+  font-size: 1rem;
+  color: var(--gray-700);
+  margin-bottom: 1.5rem;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+/* 리뷰 수정 관련 스타일 */
+.review-card.editing {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  transition: all 0.3s ease;
+}
+
+.edit-review-title {
+  width: 100%;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.edit-review-content {
+  width: 100%;
+  min-height: 100px;
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  resize: vertical;
+  margin-bottom: 10px;
+}
+
+.edit-rating {
+  margin-bottom: 15px;
+}
+
+.edit-star {
+  cursor: pointer;
+  font-size: 20px;
+  color: #ffc107;
+  margin-right: 5px;
+  transition: all 0.2s ease;
+}
+
+.edit-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.cancel-edit,
+.save-edit {
+  padding: 6px 12px;
+  font-size: 14px;
+}
+/* 애니메이션 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* 리뷰 없음 메시지 스타일 */
+.no-reviews {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem 1rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+.no-reviews-content {
+  text-align: center;
+  max-width: 500px;
+}
+
+.no-reviews-icon {
+  font-size: 4rem;
+  color: #6c757d;
+  margin-bottom: 1.5rem;
+  animation: pulse 2s infinite;
+}
+
+.no-reviews-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #343a40;
+  margin-bottom: 0.5rem;
+}
+
+.no-reviews-message {
+  font-size: 1.1rem;
+  color: #6c757d;
+  margin-bottom: 1.5rem;
+}
+
+.write-first-review {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.write-first-review:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.price-graph-container {
+/*    padding: 20px;*/
+/*    background-color: #fff;*/
+/*    border-radius: 8px;*/
+/*    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);*/
+/*    margin-bottom: 20px;*/
+}
+
+.graph-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.price-graph {
+    height: 400px;
+    position: relative;
+}
+
+.no-data-message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+    color: #666;
+    font-size: 16px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}

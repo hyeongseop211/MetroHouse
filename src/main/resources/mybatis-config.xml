@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<mappers>
+		<!-- 수정 필요 -->
+		<mapper resource="mybatis/mappers/boardCommentMapper.xml"/>
+		<mapper resource="mybatis/mappers/boardMapper.xml"/>
+		<mapper resource="mybatis/mappers/userMapper.xml"/>
+		<mapper resource="mybatis/mappers/socialUserMapper.xml"/>
+		<mapper resource="mybatis/mappers/apartment_recommend.xml"/>
+		<mapper resource="mybatis/mappers/apartment_detail.xml"/>
+		<mapper resource="mybatis/mappers/apartment_download.xml"/>
+		<mapper resource="mybatis/mappers/apartment_favorite.xml"/>
+		<mapper resource="mybatis/mappers/apartment_comparison.xml"/>
+		<mapper resource="mybatis/mappers/apartment_graph.xml"/>
+		<mapper resource="mybatis/mappers/review.xml"/>
+		<mapper resource="mybatis/mappers/util.xml"/>
+		<mapper resource="mybatis/mappers/apartment_database.xml"/>
+	</mappers>
+</configuration>

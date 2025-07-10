@@ -1,0 +1,51 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.boot.apartment.dao.ApartmentDatabaseDAO">
+
+    <!-- 기존 쿼리들은 그대로 유지 (substring을 SUBSTR로 변경) -->
+    <select id="selectAllApartmentTradeInfo" parameterType="java.util.Map" resultType="com.boot.apartment.dto.ApartmentTradeDTO">
+        SELECT
+            apartmentId,
+            sggCd,
+            aptNm,
+            excluUseAr,
+            dealYear,
+            dealMonth,
+            dealAmount,
+            floor,
+            buildYear,
+            estateAgentSggnm as estateAgentSggNm,
+            roadNm,
+            lat,
+            lng,
+            subwayStation,
+            subwayDistance
+        FROM
+            APARTMENTINFO
+        ORDER BY
+            sggCd, umdNm, aptNm, floor
+    </select>
+
+    <select id="selectApartmentTradeInfoBySggCd" parameterType="java.util.Map" resultType="com.boot.apartment.dto.ApartmentTradeDTO">
+        SELECT
+        apartmentId,
+        sggCd,
+        aptNm,
+        excluUseAr,
+        dealYear,
+        dealMonth,
+        dealAmount,
+        floor,
+        buildYear,
+        estateAgentSggnm as estateAgentSggNm,
+        roadNm,
+        lat,
+        lng,
+        subwayStation,
+        subwayDistance
+        FROM
+            A_2025_#{sggCd}
+    </select>
+</mapper>

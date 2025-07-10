@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.boot.board.dao.BoardCommentDAO">
+	<!-- 댓글 전체 보기 -->
+<select id="bcView" resultType="com.boot.board.dto.BoardCommentDTO">
+		<![CDATA[
+    SELECT * FROM board_comment
+    WHERE boardNumber = #{param.boardNumber}
+    AND (
+        commentSubNumber = 0 AND commentNumber IN (
+            SELECT commentNumber FROM (
+                SELECT rownum as rn, commentNumber
+                FROM (
+                    SELECT commentNumber
+                    FROM board_comment
+                    WHERE boardNumber = #{param.boardNumber} AND commentSubNumber = 0
+                    ORDER BY commentNumber DESC
+                ) a
+                WHERE rownum <= (#{criteria.pageNum} * #{criteria.amount})
+            ) b
+            WHERE rn > (#{criteria.pageNum} - 1) * #{criteria.amount}
+        )
+        OR commentSubNumber IN (
+            SELECT commentNumber FROM (
+                SELECT rownum as rn, commentNumber
+                FROM (
+                    SELECT commentNumber
+                    FROM board_comment
+                    WHERE boardNumber = #{param.boardNumber} AND commentSubNumber = 0
+                    ORDER BY commentNumber DESC
+                ) a
+                WHERE rownum <= (#{criteria.pageNum} * #{criteria.amount})
+            ) b
+            WHERE rn > (#{criteria.pageNum} - 1) * #{criteria.amount}
+        )
+    )
+    ORDER BY 
+        CASE WHEN commentSubNumber = 0 THEN commentNumber ELSE commentSubNumber END DESC,
+        CASE WHEN commentSubNumber = 0 THEN 0 ELSE commentNumber END ASC
+        		]]>
+</select>
+	<!-- 댓글 전체 보기 -->
+<!--    <select id="bcView"-->
+<!--        resultType="com.boot.dto.BoardCommentDTO">-->
+<!--        select commentNumber, commentSubNumber, commentSubStepNumber, -->
+<!--        boardNumber, userNumber, userName, commentContent, commentWriteDate -->
+<!--        from board_comment -->
+<!--        where boardNumber=#{boardNumber}-->
+<!--        order by commentNumber, commentSubStepNumber-->
+<!--    </select>-->
+
+    <!-- 일반 댓글 작성 -->
+    <insert id="bcWrite">
+        insert into board_comment (
+            commentNumber, commentSubNumber, commentSubStepNumber,
+            boardNumber, userNumber, userName, commentContent
+        ) values (
+            (SELECT NVL(MAX(commentNumber), 0) + 1 FROM board_comment), 
+            #{commentSubNumber}, #{commentSubStepNumber},
+            #{boardNumber}, #{userNumber}, #{userName}, #{commentContent}
+        )
+    </insert>
+
+    <!-- 대댓글 작성 -->
+    <insert id="bcReplyWrite">
+        insert into board_comment (
+            commentNumber, commentSubNumber, commentSubStepNumber,
+            boardNumber, userNumber, userName, commentContent
+        ) values (
+            (SELECT NVL(MAX(commentNumber), 0) + 1 FROM board_comment), 
+            #{commentSubNumber}, 
+            (SELECT NVL(MAX(commentSubStepNumber), 0) + 1 FROM board_comment WHERE commentSubNumber = #{commentSubNumber}),
+            #{boardNumber}, #{userNumber}, #{userName}, #{commentContent}
+        )
+    </insert>
+
+	<!-- 댓글 수정 쿼리문만 작성-->
+    <update id="bcModify">
+        update board_comment set 
+        commentContent=#{commentContent} 
+        where commentNumber=#{commentNumber}
+    </update>
+
+	<!-- 게시글 삭제 -->
+    <delete id="boardDelete">
+        delete from board_comment where commentNumber=#{commentNumber}
+    </delete>
+    
+<select id="getTotalCount" resultType="int">
+    select count(*) from board_comment 
+    where boardNumber = #{boardNumber} AND commentSubNumber = 0
+</select>
+<select id="getAllCount" resultType="int">
+    select count(*) from board_comment 
+    where boardNumber = #{boardNumber}
+</select>
+</mapper>

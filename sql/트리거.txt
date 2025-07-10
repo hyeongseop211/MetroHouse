@@ -1,0 +1,20 @@
+create or replace TRIGGER trg_apartmentinfo_insert
+AFTER INSERT ON apartmentinfo
+FOR EACH ROW
+BEGIN
+  INSERT INTO apartmentinfo_queue (
+    apartmentId, sggcd, umdnm, aptnm, jibun, excluusear,
+    dealYear, dealMonth, dealDay, dealAmount, floor, buildYear, cdealType, cdealDay,
+    dealingGbn, estateAgentSggnm, rgstDate, aptDong, slerGbn, buyerGbn,
+    landLeaseHoldGbn, aptSeq, bonbun, bubun, landCd, roadNm, roadNmBonbun,
+    roadNmBubun, roadNmCd, roadNmSeq, roadNmSggcd, roadNmBcd, umdcd,
+    lat, lng, subwayStation, subwayDistance
+  ) VALUES (
+    :NEW.apartmentId, :NEW.sggcd, :NEW.umdnm, :NEW.aptnm, :NEW.jibun, :NEW.excluusear,
+    :NEW.dealYear, :NEW.dealMonth, :NEW.dealDay, :NEW.dealAmount, :NEW.floor, :NEW.buildYear, :NEW.cdealType, :NEW.cdealDay,
+    :NEW.dealingGbn, :NEW.estateAgentSggnm, :NEW.rgstDate, :NEW.aptDong, :NEW.slerGbn, :NEW.buyerGbn,
+    :NEW.landLeaseHoldGbn, :NEW.aptSeq, :NEW.bonbun, :NEW.bubun, :NEW.landCd, :NEW.roadNm, :NEW.roadNmBonbun,
+    :NEW.roadNmBubun, :NEW.roadNmCd, :NEW.roadNmSeq, :NEW.roadNmSggcd, :NEW.roadNmBcd, :NEW.umdcd,
+    :NEW.lat, :NEW.lng, :NEW.subwayStation, :NEW.subwayDistance
+  );
+END;

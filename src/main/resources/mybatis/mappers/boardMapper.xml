@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.boot.board.dao.BoardDAO">
+	<sql id="criteriaDTO">
+	   <if test='type == "T"'>
+	      where boardTitle like '%' || #{keyword} || '%'
+	   </if>
+	   <if test='type == "C"'>
+	      where boardContent like '%' || #{keyword} || '%'
+	   </if>
+	   <if test='type == "W"'>
+	      where userName like '%' || #{keyword} || '%'
+	   </if>
+	</sql>
+	<!-- 게시판 전체 보기 -->
+	<select id="boardView"
+		resultType="com.boot.board.dto.BoardDTO">
+		<![CDATA[
+		    SELECT boardNumber, userNumber, userName, boardTitle, boardWriteDate, boardHit, boardViews, boardLikes
+		    FROM (
+		        SELECT rownum as rn, boardNumber, userNumber, userName, boardTitle, boardWriteDate, boardHit, boardViews, boardLikes
+		        FROM (
+		            SELECT boardNumber, userNumber, userName, boardTitle, boardWriteDate, boardHit, boardViews, boardLikes
+		            FROM board
+		            ]]>
+		            <include refid="criteriaDTO"></include>
+		            <![CDATA[
+		            ORDER BY boardNumber DESC
+		        ) a
+		        where rownum <= (#{pageNum} * #{amount})
+		    )aa
+		    where rn > (#{pageNum} - 1) * #{amount}
+		]]>
+	</select>
+
+    <select id="getTotalCount" resultType="int">
+    	select count(*) from board
+    	<include refid="criteriaDTO"></include>
+    </select>
+
+	<!-- 게시글 작성 -->
+	<insert id="boardWrite">
+		insert into board(boardNumber, userNumber, userName,
+		boardTitle, boardContent)
+		values ((SELECT NVL(MAX(boardNumber), 0) + 1
+		FROM board), #{userNumber}, #{userName}, #{boardTitle},
+		#{boardContent})
+	</insert>
+
+	<!-- 게시글 디테일 -->
+	<select id="boardDetailView"
+		resultType="com.boot.board.dto.BoardDTO">
+		select boardNumber, userNumber, userName, boardTitle,
+		boardContent, boardWriteDate, boardHit, boardViews, boardLikes
+		from
+		board where boardNumber=#{boardNumber}
+	</select>
+
+	<!-- 게시글 수정 -->
+	<update id="boardModify"> update board set boardTitle=#{boardTitle},
+		boardContent=#{boardContent} where boardNumber=#{boardNumber}
+	</update>
+	<update id="boardDelete"> delete from board where boardNumber=#{boardNumber}
+	</update>
+	<update id="boardHit">
+		UPDATE board
+		SET boardViews = NVL(boardViews, 0) + 1
+		WHERE boardNumber = #{boardNumber}
+	</update>
+
+	<!-- 좋아요 중복 확인 -->
+	<select id="boardCheckLiked" resultType="int">
+		SELECT COUNT(*) FROM
+		board_likes
+		WHERE boardNumber = #{boardNumber}
+		AND userNumber =
+		#{userNumber}
+	</select>
+
+	<!-- 좋아요 삽입 -->
+	<insert id="boardAddLike">
+		INSERT INTO board_likes (boardNumber, userNumber)
+		VALUES (#{boardNumber}, #{userNumber})
+	</insert>
+	<!-- 좋아요1증가 -->
+	<update id="boardIncrementLike">
+		UPDATE board
+		SET boardLikes = NVL(boardLikes, 0) + 1
+		WHERE boardNumber = #{boardNumber}
+	</update>
+	<!-- 좋아요 삭제 -->
+<delete id="boardRemoveLike">
+    DELETE FROM board_likes 
+    WHERE boardNumber = #{boardNumber} AND userNumber = #{userNumber}
+</delete>
+<!-- 좋아요 1감소 -->
+<update id="boardDecrementLike">
+    UPDATE board
+    SET boardLikes = CASE 
+                        WHEN boardLikes > 0 THEN boardLikes - 1 
+                        ELSE 0 
+                     END
+    WHERE boardNumber = #{boardNumber}
+</update>
+	<!-- 현재 좋아요 수 조회 -->
+	<select id="boardgetLike" resultType="int">
+		SELECT boardLikes FROM
+		board
+		WHERE boardNumber = #{boardNumber}
+	</select>
+	
+	<select id="getCommentCountByBoardNumber" resultType="int" parameterType="int">
+    SELECT COUNT(*) FROM board_comment 
+    WHERE boardNumber = #{boardNumber}
+	</select>
+</mapper>

@@ -1,0 +1,354 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.boot.apartment.dao.ApartmentDownloadDAO">
+
+    <insert id="insertApartmentInfo" parameterType="com.boot.apartment.dto.ApartmentTradeDTO">
+        MERGE INTO APARTMENTINFO t
+        USING (
+            SELECT
+                #{sggCd, jdbcType=VARCHAR} as sggCd,
+                #{umdNm, jdbcType=VARCHAR} as umdNm,
+                #{aptNm, jdbcType=VARCHAR} as aptNm,
+                #{dealYear, jdbcType=VARCHAR} as dealYear,
+                #{dealMonth, jdbcType=VARCHAR} as dealMonth,
+                #{dealDay, jdbcType=VARCHAR} as dealDay
+            FROM dual
+        ) s
+        ON (
+            t.sggCd = s.sggCd AND
+            t.umdNm = s.umdNm AND
+            t.aptNm = s.aptNm AND
+            t.dealYear = s.dealYear AND
+            t.dealMonth = s.dealMonth AND
+            t.dealDay = s.dealDay
+        )
+        WHEN MATCHED THEN
+            UPDATE SET
+                t.dealAmount = #{dealAmount, jdbcType=VARCHAR},
+                t.rgstDate = #{rgstDate, jdbcType=VARCHAR}
+        WHEN NOT MATCHED THEN
+            INSERT (
+				APARTMENTID,
+                sggCd,
+                umdNm,
+                aptNm,
+                jibun,
+                excluUseAr,
+                dealYear,
+                dealMonth,
+                dealDay,
+                dealAmount,
+                floor,
+                buildYear,
+                cdealType,
+                cdealDay,
+                dealingGbn,
+                estateAgentSggNm,
+                rgstDate,
+                aptDong,
+                slerGbn,
+                buyerGbn,
+                landLeaseHoldGbn,
+                aptSeq,
+                bonbun,
+                bubun,
+                landCd,
+                roadNm,
+                roadNmBonbun,
+                roadNmBubun,
+                roadNmCd,
+                roadNmSeq,
+                roadNmSggCd,
+                roadNmBCd,
+                umdCd,
+                lat,
+                lng,
+                subwayStation,
+                subwayDistance
+            )
+            VALUES (
+				SEQ_APARTMENTINFO.NEXTVAL,
+                #{sggCd, jdbcType=VARCHAR},
+                #{umdNm, jdbcType=VARCHAR},
+                #{aptNm, jdbcType=VARCHAR},
+                #{jibun, jdbcType=VARCHAR},
+                #{excluUseAr, jdbcType=VARCHAR},
+                #{dealYear, jdbcType=VARCHAR},
+                #{dealMonth, jdbcType=VARCHAR},
+                #{dealDay, jdbcType=VARCHAR},
+                #{dealAmount, jdbcType=VARCHAR},
+                #{floor, jdbcType=VARCHAR},
+                #{buildYear, jdbcType=VARCHAR},
+                #{cdealType, jdbcType=VARCHAR},
+                #{cdealDay, jdbcType=VARCHAR},
+                #{dealingGbn, jdbcType=VARCHAR},
+                #{estateAgentSggNm, jdbcType=VARCHAR},
+                #{rgstDate, jdbcType=VARCHAR},
+                #{aptDong, jdbcType=VARCHAR},
+                #{slerGbn, jdbcType=VARCHAR},
+                #{buyerGbn, jdbcType=VARCHAR},
+                #{landLeaseHoldGbn, jdbcType=VARCHAR},
+                #{aptSeq, jdbcType=VARCHAR},
+                #{bonbun, jdbcType=VARCHAR},
+                #{bubun, jdbcType=VARCHAR},
+                #{landCd, jdbcType=VARCHAR},
+                #{roadNm, jdbcType=VARCHAR},
+                #{roadNmBonbun, jdbcType=VARCHAR},
+                #{roadNmBubun, jdbcType=VARCHAR},
+                #{roadNmCd, jdbcType=VARCHAR},
+                #{roadNmSeq, jdbcType=VARCHAR},
+                #{roadNmSggCd, jdbcType=VARCHAR},
+                #{roadNmBCd, jdbcType=VARCHAR},
+                #{umdCd, jdbcType=VARCHAR},
+                #{lat, jdbcType=NUMERIC},
+                #{lng, jdbcType=NUMERIC},
+                #{subwayStation, jdbcType=VARCHAR},
+                #{subwayDistance, jdbcType=VARCHAR}
+            )
+    </insert>
+    
+    <!-- APARTMENTINFO_QUEUE 테이블에 삽입하는 쿼리 추가 -->
+    <insert id="insertToQueue" parameterType="com.boot.apartment.dto.ApartmentTradeDTO">
+     MERGE INTO APARTMENTINFO_QUEUE target
+    USING (
+        SELECT
+            #{sggCd, jdbcType=VARCHAR} as SGGCD,
+            #{aptNm, jdbcType=VARCHAR} as APTNM,
+            #{dealYear, jdbcType=VARCHAR} as DEALYEAR,
+            #{dealMonth, jdbcType=VARCHAR} as DEALMONTH,
+            #{dealDay, jdbcType=VARCHAR} as DEALDAY,
+            #{excluUseAr, jdbcType=VARCHAR} as EXCLUUSEAR,
+            #{floor, jdbcType=VARCHAR} as FLOOR,
+            #{dealAmount, jdbcType=VARCHAR} as DEALAMOUNT
+        FROM dual
+    ) source
+    ON (
+        target.SGGCD = source.SGGCD AND
+        target.APTNM = source.APTNM AND
+        target.DEALYEAR = source.DEALYEAR AND
+        target.DEALMONTH = source.DEALMONTH AND
+        target.DEALDAY = source.DEALDAY AND
+        target.EXCLUUSEAR = source.EXCLUUSEAR AND
+        target.FLOOR = source.FLOOR AND
+        target.DEALAMOUNT = source.DEALAMOUNT
+    )
+    WHEN MATCHED THEN
+        UPDATE SET
+            target.UMDNM = #{umdNm, jdbcType=VARCHAR},
+            target.JIBUN = #{jibun, jdbcType=VARCHAR},
+            target.BUILDYEAR = #{buildYear, jdbcType=VARCHAR},
+            target.CDEALTYPE = #{cdealType, jdbcType=VARCHAR},
+            target.CDEALDAY = #{cdealDay, jdbcType=VARCHAR},
+            target.DEALINGGBN = #{dealingGbn, jdbcType=VARCHAR},
+            target.ESTATEAGENTSGGNM = #{estateAgentSggNm, jdbcType=VARCHAR},
+            target.RGSTDATE = #{rgstDate, jdbcType=VARCHAR},
+            target.APTDONG = #{aptDong, jdbcType=VARCHAR},
+            target.SLERGBN = #{slerGbn, jdbcType=VARCHAR},
+            target.BUYERGBN = #{buyerGbn, jdbcType=VARCHAR},
+            target.LANDLEASEHOLDGBN = #{landLeaseHoldGbn, jdbcType=VARCHAR},
+            target.APTSEQ = #{aptSeq, jdbcType=VARCHAR},
+            target.BONBUN = #{bonbun, jdbcType=VARCHAR},
+            target.BUBUN = #{bubun, jdbcType=VARCHAR},
+            target.LANDCD = #{landCd, jdbcType=VARCHAR},
+            target.ROADNM = #{roadNm, jdbcType=VARCHAR},
+            target.ROADNMBONBUN = #{roadNmBonbun, jdbcType=VARCHAR},
+            target.ROADNMBUBUN = #{roadNmBubun, jdbcType=VARCHAR},
+            target.ROADNMCD = #{roadNmCd, jdbcType=VARCHAR},
+            target.ROADNMSEQ = #{roadNmSeq, jdbcType=VARCHAR},
+            target.ROADNMSGGCD = #{roadNmSggCd, jdbcType=VARCHAR},
+            target.ROADNMBCD = #{roadNmBCd, jdbcType=VARCHAR},
+            target.UMDCD = #{umdCd, jdbcType=VARCHAR},
+            target.LAT = #{lat, jdbcType=NUMERIC},
+            target.LNG = #{lng, jdbcType=NUMERIC},
+            target.SUBWAYSTATION = #{subwayStation, jdbcType=VARCHAR},
+            target.SUBWAYDISTANCE = #{subwayDistance, jdbcType=VARCHAR},
+            target.PROCESSED = 'N'
+    WHEN NOT MATCHED THEN
+        INSERT (
+            APARTMENTID, SGGCD, UMDNM, APTNM, JIBUN, EXCLUUSEAR, DEALYEAR, DEALMONTH, DEALDAY,
+            DEALAMOUNT, FLOOR, BUILDYEAR, CDEALTYPE, CDEALDAY, DEALINGGBN, ESTATEAGENTSGGNM,
+            RGSTDATE, APTDONG, SLERGBN, BUYERGBN, LANDLEASEHOLDGBN, APTSEQ, BONBUN, BUBUN,
+            LANDCD, ROADNM, ROADNMBONBUN, ROADNMBUBUN, ROADNMCD, ROADNMSEQ, ROADNMSGGCD,
+            ROADNMBCD, UMDCD, LAT, LNG, SUBWAYSTATION, SUBWAYDISTANCE, PROCESSED
+        ) VALUES (
+            SEQ_APARTMENTINFO_QUEUE.NEXTVAL,
+            #{sggCd, jdbcType=VARCHAR},
+            #{umdNm, jdbcType=VARCHAR},
+            #{aptNm, jdbcType=VARCHAR},
+            #{jibun, jdbcType=VARCHAR},
+            #{excluUseAr, jdbcType=VARCHAR},
+            #{dealYear, jdbcType=VARCHAR},
+            #{dealMonth, jdbcType=VARCHAR},
+            #{dealDay, jdbcType=VARCHAR},
+            #{dealAmount, jdbcType=VARCHAR},
+            #{floor, jdbcType=VARCHAR},
+            #{buildYear, jdbcType=VARCHAR},
+            #{cdealType, jdbcType=VARCHAR},
+            #{cdealDay, jdbcType=VARCHAR},
+            #{dealingGbn, jdbcType=VARCHAR},
+            #{estateAgentSggNm, jdbcType=VARCHAR},
+            #{rgstDate, jdbcType=VARCHAR},
+            #{aptDong, jdbcType=VARCHAR},
+            #{slerGbn, jdbcType=VARCHAR},
+            #{buyerGbn, jdbcType=VARCHAR},
+            #{landLeaseHoldGbn, jdbcType=VARCHAR},
+            #{aptSeq, jdbcType=VARCHAR},
+            #{bonbun, jdbcType=VARCHAR},
+            #{bubun, jdbcType=VARCHAR},
+            #{landCd, jdbcType=VARCHAR},
+            #{roadNm, jdbcType=VARCHAR},
+            #{roadNmBonbun, jdbcType=VARCHAR},
+            #{roadNmBubun, jdbcType=VARCHAR},
+            #{roadNmCd, jdbcType=VARCHAR},
+            #{roadNmSeq, jdbcType=VARCHAR},
+            #{roadNmSggCd, jdbcType=VARCHAR},
+            #{roadNmBCd, jdbcType=VARCHAR},
+            #{umdCd, jdbcType=VARCHAR},
+            #{lat, jdbcType=NUMERIC},
+            #{lng, jdbcType=NUMERIC},
+            #{subwayStation, jdbcType=VARCHAR},
+            #{subwayDistance, jdbcType=VARCHAR},
+            'N'
+        )
+    </insert>
+    
+    <!-- 처리된 큐 데이터 삭제 쿼리 -->
+    <delete id="deleteProcessedQueueData">
+        DELETE FROM APARTMENTINFO_QUEUE
+        WHERE PROCESSED = 'Y'
+    </delete>
+    
+    <!-- 큐 테이블의 처리 상태 초기화 쿼리 -->
+    <update id="resetQueueProcessedStatus">
+        UPDATE APARTMENTINFO_QUEUE
+        SET PROCESSED = 'N'
+    </update>
+    
+    <!-- 큐 테이블의 데이터 조회 쿼리 -->
+    <select id="getQueueData" resultType="com.boot.apartment.dto.ApartmentTradeDTO">
+        SELECT
+            apartmentId,
+            sggCd,
+            umdNm,
+            aptNm,
+            jibun,
+            excluUseAr,
+            dealYear,
+            dealMonth,
+            dealDay,
+            dealAmount,
+            floor,
+            buildYear,
+            cdealType,
+            cdealDay,
+            dealingGbn,
+            estateAgentSggnm as estateAgentSggNm,
+            rgstDate,
+            aptDong,
+            slerGbn,
+            buyerGbn,
+            landLeaseHoldGbn as landLeaseholdGbn,
+            aptSeq,
+            bonbun,
+            bubun,
+            landCd,
+            roadNm,
+            roadNmBonbun,
+            roadNmBubun,
+            roadNmCd,
+            roadNmSeq,
+            roadNmsggCd as roadNmSggCd,
+            roadNmBcd as roadNmBCd,
+            umdcd as umdCd,
+            lat,
+            lng,
+            subwayStation,
+            subwayDistance,
+            processed
+        FROM
+            APARTMENTINFO_QUEUE
+        WHERE
+            PROCESSED = 'N'
+        ORDER BY
+            dealYear, dealMonth, sggCd, umdNm, aptNm
+    </select>
+    
+    <!-- 큐 테이블의 데이터 개수 조회 쿼리 -->
+    <select id="countQueueData" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM APARTMENTINFO_QUEUE
+        WHERE PROCESSED = 'N'
+    </select>
+    
+    <!-- 기존 쿼리들은 그대로 유지 (substring을 SUBSTR로 변경) -->
+    <select id="getApartmentDataByYearMonth" parameterType="java.util.Map" resultType="com.boot.apartment.dto.ApartmentTradeDTO">
+        SELECT
+            apartmentId,
+            sggCd,
+            umdNm,
+            aptNm,
+            jibun,
+            excluUseAr,
+            dealYear,
+            dealMonth,
+            dealDay,
+            dealAmount,
+            floor,
+            buildYear,
+            cdealType,
+            cdealDay,
+            dealingGbn,
+            estateAgentSggnm as estateAgentSggNm,
+            rgstDate,
+            aptDong,
+            slerGbn,
+            buyerGbn,
+            landLeaseHoldGbn as landLeaseholdGbn,
+            aptSeq,
+            bonbun,
+            bubun,
+            landCd,
+            roadNm,
+            roadNmBonbun,
+            roadNmBubun,
+            roadNmCd,
+            roadNmSeq,
+            roadNmsggCd as roadNmSggCd,
+            roadNmBcd as roadNmBCd,
+            umdcd as umdCd,
+            lat,
+            lng,
+            subwayStation,
+            subwayDistance
+        FROM
+            APARTMENTINFO
+        WHERE
+            dealYear = SUBSTR(#{yearMonth, jdbcType=VARCHAR}, 1, 4)
+            AND dealMonth = SUBSTR(#{yearMonth, jdbcType=VARCHAR}, 5)
+        ORDER BY
+            sggCd, umdNm, aptNm, floor
+    </select>
+    
+    <select id="countApartmentDataByYearMonth" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT
+            COUNT(*)
+        FROM
+            APARTMENTINFO
+        WHERE
+            dealYear = SUBSTR(#{yearMonth, jdbcType=VARCHAR}, 1, 4)
+            AND dealMonth = SUBSTR(#{yearMonth, jdbcType=VARCHAR}, 5)
+    </select>
+    
+    <delete id="deleteApartmentDataByYearMonth" parameterType="java.util.Map">
+        DELETE FROM
+            APARTMENTINFO
+        WHERE
+            dealYear = SUBSTR(#{yearMonth, jdbcType=VARCHAR}, 1, 4)
+            AND dealMonth = SUBSTR(#{yearMonth, jdbcType=VARCHAR}, 5)
+    </delete>
+    <update id="executeProcedure" statementType="CALLABLE">
+    {call process_apartmentinfo_queue()}
+</update>
+</mapper>

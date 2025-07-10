@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.boot.apartment_recommend_detail.dao.ApartmentRecommendDAO">
+<select id="recommend" parameterType="com.boot.user.dto.BasicUserDTO" resultType="com.boot.apartment_recommend_detail.dto.ApartmentDTO">
+    <![CDATA[
+    SELECT * FROM (
+        SELECT 
+            a.*
+        FROM 
+            apartmentinfo a
+        WHERE 
+            /* 사용자 주소에서 시/도 + 구/군 추출 (첫 두 부분) */
+            a.ESTATEAGENTSGGNM = 
+                CASE
+                    WHEN INSTR(#{userAddress}, ' ', 1, 2) > 0 
+                    THEN SUBSTR(#{userAddress}, 1, INSTR(#{userAddress}, ' ', 1, 2) - 1)
+                    WHEN INSTR(#{userAddress}, ' ') > 0
+                    THEN SUBSTR(#{userAddress}, 1, INSTR(#{userAddress}, ' ') - 1)
+                    ELSE #{userAddress}
+                END
+            AND a.lat IS NOT NULL 
+            AND a.lng IS NOT NULL
+        ORDER BY 
+            DBMS_RANDOM.VALUE
+    ) 
+    WHERE ROWNUM <= 3
+    ]]>
+</select>
+</mapper>
